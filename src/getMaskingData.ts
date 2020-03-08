@@ -146,6 +146,8 @@ export function getMaskingData(
       pipeResults = { value: previousConformedValue, rejected: true };
     } else if (typeof piped === 'string') {
       pipeResults = { value: piped };
+    } else {
+      pipeResults = piped;
     }
   }
 
