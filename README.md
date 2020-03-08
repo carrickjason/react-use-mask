@@ -1,6 +1,6 @@
 # react-use-mask
 
-React hook for easily masking inputs
+React hook for easily masking inputs.
 
 # TSDX React User Guide
 
