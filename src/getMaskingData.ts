@@ -98,7 +98,7 @@ export function getMaskingData(
 
     // The processed usableMask is what we're interested in
     usableMask = maskWithoutCursorTraps;
-    // And we need to store these indexes because they're needed by `getAdjustedCaretPosition`
+    // And we need to store these indexes because they're needed by `getAdjustedCursorPosition`
     result.cursorTrapIndexes = indexes;
 
     result.placeholder = convertMaskToPlaceholder(usableMask, placeholderChar);
