@@ -63,4 +63,5 @@ type Props = {
 type EventRef = null | {
   value: string;
   start: number | null;
+  target: HTMLInputElement;
 };

@@ -2,6 +2,11 @@
 
 React hook for easily masking inputs.
 
+## Inspiration
+
+- This library is essentially a fork of [`react-text-mask`](https://github.com/text-mask/text-mask/tree/master/react#readme). I really liked their feature set and api. I just wanted a version built specifically for react and in the form of a hook. Thanks to them for laying the ground work for this lib.
+- [`rifm`](https://github.com/realadvisor/rifm) is a fantastic, tiny, masking/formating tool for react. Props to them for inspiring the change handler/force update/useLayoutEffect (needs a pattern name!) cycle idea used in this hook.
+
 ## Install
 
 `npm install react-use-mask`
@@ -12,7 +17,7 @@ or
 
 ```jsx
 function DateInput({ value, onChange }) {
-  const [ref, mask] = useMask({
+  const mask = useMask({
     mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/,],
     showMask: true,
     keepCharPositions: true,
@@ -20,14 +25,9 @@ function DateInput({ value, onChange }) {
     onChange
   })
 
-  return <input ref={ref} value={mask.value} onChange={mask.onChange}>
+  return <input value={mask.value} onChange={mask.onChange}>
 }
 ```
-
-## Inspiration
-
-- [`react-text-mask`](https://github.com/text-mask/text-mask/tree/master/react#readme) is a great library that worked for most of my use cases. The only thing it was missing was a modern react solution (hooks). I loved the api so much that I stole it (along with a lot of great code).
-- [`rifm`](https://github.com/realadvisor/rifm) is a fantastic, tiny, masking/formating tool for react. I liked that it provided a hook but found myself missing `react-text-mask`'s easy api.
 
 ## API
 

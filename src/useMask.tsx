@@ -2,30 +2,19 @@ import * as React from 'react';
 import { getMaskingData } from './getMaskingData';
 import { getAdjustedCursorPosition } from './getAdjustedCursorPosition';
 
-type InputRef = React.MutableRefObject<HTMLInputElement | undefined>;
-
 export function useMask({
-  guide = true,
-  inputRef: forwardedRef,
-  keepCharPositions = false,
-  mask,
+  value = '',
   onChange,
+  mask,
   pipe,
+  guide = true,
+  keepCharPositions = false,
   placeholderChar = '_',
   showMask = false,
-  value = '',
-}: Props): [
-  InputRef,
-  {
-    value: string;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  }
-] {
-  let inputRef = React.useRef<HTMLInputElement>();
-  if (forwardedRef) {
-    inputRef = forwardedRef;
-  }
-
+}: Props): {
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+} {
   const [, refresh] = React.useReducer(c => c + 1, 0);
   let masked = React.useRef<MaskingData>({
     conformedValue: '',
@@ -43,11 +32,12 @@ export function useMask({
     event.current = {
       value: e.target.value,
       start: e.target.selectionStart,
+      target: e.target,
     };
     refresh();
   };
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     let currentEvent = event ? event.current : null;
 
     if (currentEvent || !value || value !== masked.current.conformedValue) {
@@ -93,20 +83,20 @@ export function useMask({
       }
 
       masked.current = maskedData;
-      event.current = null;
     }
 
-    if (inputRef.current) {
-      inputRef.current.selectionStart = inputRef.current.selectionEnd =
-        cursor.current;
-    }
+    return () => {
+      if (currentEvent && currentEvent.target) {
+        currentEvent.target.selectionStart = currentEvent.target.selectionEnd =
+          cursor.current;
+
+        event.current = null;
+      }
+    };
   });
 
-  return [
-    inputRef,
-    {
-      onChange: handleChange,
-      value: masked.current.conformedValue,
-    },
-  ];
+  return {
+    onChange: handleChange,
+    value: masked.current.conformedValue,
+  };
 }
