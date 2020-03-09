@@ -1,3 +1,5 @@
+![npm version](https://img.shields.io/npm/v/react-use-mask)
+
 # react-use-mask
 
 React hook for easily masking inputs.
