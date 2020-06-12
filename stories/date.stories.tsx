@@ -2,6 +2,7 @@ import React from 'react';
 import useMask from '../src';
 import { createAutoCorrectedDatePipe } from '../src/addons';
 import { format } from 'date-fns';
+import { boolean } from '@storybook/addon-knobs';
 
 export default { title: 'Date Mask' };
 
@@ -12,14 +13,15 @@ const DateInput = ({ initial = '', config = {} }) => {
     mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/],
     onChange: setValue,
     value,
-    keepCharPositions: true,
-    showMask: true,
+    keepCharPositions: boolean('keepCharPositions', true),
+    guide: boolean('guide', true),
+    showMask: boolean('showMask', true),
     ...config,
   });
 
   return (
     <>
-      <input {...mask} />
+      <input {...mask} placeholder="mm/dd/yyyy" />
       <button onClick={() => setValue(format(new Date(), 'MM/dd/yyyy'))}>
         Today
       </button>
