@@ -5,8 +5,15 @@ import {
   getRawValue,
   processCursorTraps,
 } from './utils';
+import type {
+  MaskOrMaskGetter,
+  Pipe,
+  MaskingData,
+  MaskIndex,
+  PipeResult,
+} from './types';
 
-type MaskingConfig = {
+export type MaskingConfig = {
   currentCursorPosition: number;
   previousConformedValue: string;
   previousPlaceholder: string;

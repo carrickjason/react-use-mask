@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { getMaskingData } from './getMaskingData';
 import { getAdjustedCursorPosition } from './getAdjustedCursorPosition';
+import type { UseMaskArgs, MaskingData, EventRef, MaskedInputProps } from './types';
 
 export function useMask({
   value = '',
@@ -11,11 +12,8 @@ export function useMask({
   keepCharPositions = false,
   placeholderChar = '_',
   showMask = false,
-}: Props): {
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-} {
-  const [, refresh] = React.useReducer(c => c + 1, 0);
+}: UseMaskArgs): MaskedInputProps {
+  const [, refresh] = React.useReducer((state: number) => state + 1, 0);
   let masked = React.useRef<MaskingData>({
     conformedValue: '',
     rawValue: '',

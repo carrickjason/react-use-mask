@@ -1,3 +1,5 @@
+import type { MaskIndex } from '../types';
+
 const minus = '-';
 const minusRegExp = /-/;
 const nonDigitsRegExp = /\D+/g;
