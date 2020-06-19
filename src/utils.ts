@@ -1,3 +1,5 @@
+import type { MaskIndex } from './types';
+
 export function convertMaskToPlaceholder(
   mask: MaskIndex[] = [],
   placeholderChar: string = '_'

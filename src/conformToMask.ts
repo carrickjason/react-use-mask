@@ -1,4 +1,6 @@
-type ConformConfig = {
+import type { MaskIndex } from './types';
+
+export type ConformConfig = {
   guide: boolean;
   previousConformedValue: string;
   placeholderChar: string;

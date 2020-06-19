@@ -1,4 +1,4 @@
-type AdjustCursorConfig = {
+export type AdjustCursorConfig = {
   cursorTrapIndexes: number[];
   conformedValue: string;
   currentCursorPosition: number;
