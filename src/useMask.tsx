@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getMaskingData } from './getMaskingData';
 import { getAdjustedCursorPosition } from './getAdjustedCursorPosition';
-import type { UseMaskArgs, MaskingData, EventRef, MaskedInputProps } from './types';
+import { UseMaskArgs, MaskingData, EventRef, MaskedInputProps } from './types';
 
 export function useMask({
   value = '',
@@ -22,7 +22,6 @@ export function useMask({
     cursorTrapIndexes: [],
   });
   let event = React.useRef<EventRef>(null);
-  let cursor = React.useRef(0);
 
   // Save the event and force an update so that the effect can handle
   // any changes
@@ -37,6 +36,7 @@ export function useMask({
 
   React.useLayoutEffect(() => {
     let currentEvent = event ? event.current : null;
+    let cursorPosition = 0;
 
     if (currentEvent || !value || value !== masked.current.conformedValue) {
       // grab previous masekdValues
@@ -44,10 +44,10 @@ export function useMask({
         conformedValue: previousConformedValue,
         placeholder: previousPlaceholder,
       } = masked.current;
-      let userValue = (currentEvent ? currentEvent.value : value) || '';
+      let changedValue = (currentEvent ? currentEvent.value : value) || '';
       let start = currentEvent?.start ?? 0;
 
-      let maskedData = getMaskingData(userValue, {
+      let maskedData = getMaskingData(changedValue, {
         currentCursorPosition: start,
         previousConformedValue,
         previousPlaceholder,
@@ -59,13 +59,12 @@ export function useMask({
         placeholderChar,
       });
 
-      // get adjusted cursor position
-      cursor.current = getAdjustedCursorPosition({
+      cursorPosition = getAdjustedCursorPosition({
         previousPlaceholder: masked.current.placeholder,
         previousConformedValue: masked.current.conformedValue,
         currentCursorPosition: start,
         conformedValue: maskedData.conformedValue,
-        changedValue: userValue,
+        changedValue,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
         cursorTrapIndexes: maskedData.cursorTrapIndexes,
@@ -74,10 +73,10 @@ export function useMask({
 
       const { conformedValue } = maskedData;
 
-      if (userValue === conformedValue) {
+      if (changedValue && changedValue === conformedValue) {
         conformedValue !== previousConformedValue && refresh();
-      } else {
-        onChange(maskedData.conformedValue);
+      } else if (conformedValue !== value) {
+        onChange(conformedValue);
       }
 
       masked.current = maskedData;
@@ -85,9 +84,7 @@ export function useMask({
 
     return () => {
       if (currentEvent && currentEvent.target) {
-        currentEvent.target.selectionStart = currentEvent.target.selectionEnd =
-          cursor.current;
-
+        currentEvent.target.selectionStart = currentEvent.target.selectionEnd = cursorPosition;
         event.current = null;
       }
     };

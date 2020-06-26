@@ -1,4 +1,4 @@
-import type { MaskIndex } from '../types';
+import { MaskIndex } from '../types';
 
 const minus = '-';
 const minusRegExp = /-/;

@@ -1,4 +1,4 @@
-import type { MaskIndex } from './types';
+import { MaskIndex } from './types';
 
 export type ConformConfig = {
   guide: boolean;
