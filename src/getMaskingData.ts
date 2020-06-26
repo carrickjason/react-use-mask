@@ -5,7 +5,7 @@ import {
   getRawValue,
   processCursorTraps,
 } from './utils';
-import type {
+import {
   MaskOrMaskGetter,
   Pipe,
   MaskingData,

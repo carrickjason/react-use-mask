@@ -1,4 +1,4 @@
-import type { MaskIndex } from './types';
+import { MaskIndex } from './types';
 
 export function convertMaskToPlaceholder(
   mask: MaskIndex[] = [],
@@ -50,7 +50,7 @@ export function getRawValue(
   placeholderChar: string = '_',
   includedChars: MaskIndex[] = []
 ): string {
-  if (value === '' || placeholder == '') {
+  if (value === '' || placeholder === '') {
     return value;
   }
 
@@ -97,7 +97,7 @@ export function mergeWithPlaceholder(
   let merged = placeholder.split('').reduce(
     ({ conformed, remainder, maskedCount }, char, i) => {
       let currentValue = value[i - maskedCount];
-      let shouldFill = char === placeholderChar || char == currentValue;
+      let shouldFill = char === placeholderChar || char === currentValue;
 
       return {
         conformed: `${conformed}${shouldFill ? currentValue : char}`,

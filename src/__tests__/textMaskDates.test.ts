@@ -234,9 +234,6 @@ describe('createAutoCorrectedDatePipe', () => {
       pipe,
       mask,
       placeholderChar,
-      previousRawValue: '04042019',
-      previousConformedValue: '04/04/2019',
-      previousPlaceholder: '__/__/____',
       keepCharPositions: true,
       ...previous,
     });

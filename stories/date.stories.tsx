@@ -15,7 +15,7 @@ const DateInput = ({ initial = '', config = {} }) => {
     value,
     keepCharPositions: boolean('keepCharPositions', true),
     guide: boolean('guide', true),
-    showMask: boolean('showMask', true),
+    placeholderChar: ' ',
     ...config,
   });
 
