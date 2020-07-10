@@ -16,7 +16,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -25,7 +25,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -44,7 +44,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -58,7 +58,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = ['(', /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -67,7 +67,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -86,7 +86,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -100,7 +100,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/, '-'];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -109,7 +109,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -128,7 +128,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -142,7 +142,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/, '-', /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -151,7 +151,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -170,7 +170,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -184,7 +184,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/, /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -193,7 +193,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       pipe: mockPipe,
       currentCursorPosition: 1,
@@ -213,7 +213,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -227,7 +227,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/, /\d/, '-', /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -236,7 +236,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       pipe: mockPipe,
       currentCursorPosition: 1,
@@ -256,7 +256,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -270,7 +270,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = createNumberMask({ allowDecimal: true });
     let maskedData;
     let adjustedCursor;
-    let changedValue = '125.34';
+    let inputValue = '125.34';
 
     let previous = {
       previousConformedValue: '12.34',
@@ -279,7 +279,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 2,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 3,
       placeholderChar,
@@ -298,7 +298,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 3,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -313,7 +313,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = createNumberMask();
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1,23';
+    let inputValue = '1,23';
 
     let previous = {
       previousConformedValue: '1,234',
@@ -322,7 +322,7 @@ describe('getAdjustedCursorPosition', () => {
       previousCursorPosition: 5,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       ...previous,
       mask,
       currentCursorPosition: 4,
@@ -341,7 +341,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 4,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -351,57 +351,55 @@ describe('getAdjustedCursorPosition', () => {
     expect(adjustedCursor).toBe(3);
   });
 
-  // test('Backspacing a masked char with keepCharPositions', () => {
-  //   let mask = [/\d/, /\d/, '/', /\d/, /\d/];
-  //   let maskedData;
-  //   let adjustedCursor;
-  //   let changedValue = '11__';
+  test('Backspacing a masked char with keepCharPositions', () => {
+    let mask = [/\d/, /\d/, '/', /\d/, /\d/];
+    let maskedData;
+    let adjustedCursor;
+    let inputValue = '11__';
 
-  //   let previous = {
-  //     previousCursorPosition: 3,
-  //     previousConformedValue: '11/__',
-  //     previousRawValue: '11',
-  //     previousPlaceholder: '__/__',
-  //   };
+    let previous = {
+      previousCursorPosition: 3,
+      previousConformedValue: '11/__',
+      previousRawValue: '11',
+      previousPlaceholder: '__/__',
+    };
 
-  //   maskedData = getMaskingData(changedValue, {
-  //     mask,
-  //     currentCursorPosition: 2,
-  //     placeholderChar,
-  //     keepCharPositions: true,
-  //     guide: true,
-  //     ...previous,
-  //   });
+    maskedData = getMaskingData(inputValue, {
+      mask,
+      currentCursorPosition: 2,
+      placeholderChar,
+      keepCharPositions: true,
+      guide: true,
+      ...previous,
+    });
 
-  //   expect(maskedData).toEqual({
-  //     conformedValue: '11/__',
-  //     rawValue: '11',
-  //     placeholder: '__/__',
-  //     indexesOfPipedChars: [],
-  //     cursorTrapIndexes: [],
-  //   });
+    expect(maskedData).toEqual({
+      conformedValue: '11/__',
+      rawValue: '11',
+      placeholder: '__/__',
+      indexesOfPipedChars: [],
+      cursorTrapIndexes: [],
+    });
 
-  //   adjustedCursor = getAdjustedCursorPosition({
-  //     ...previous,
-  //     currentCursorPosition: 2,
-  //     conformedValue: maskedData.conformedValue,
-  //     changedValue,
-  //     placeholderChar,
-  //     placeholder: maskedData.placeholder,
-  //     indexesOfPipedChars: maskedData.indexesOfPipedChars,
-  //     cursorTrapIndexes: maskedData.cursorTrapIndexes,
-  //     keepCharPositions: true,
-  //     guide: true,
-  //   });
+    adjustedCursor = getAdjustedCursorPosition({
+      ...previous,
+      currentCursorPosition: 2,
+      conformedValue: maskedData.conformedValue,
+      inputValue,
+      placeholderChar,
+      placeholder: maskedData.placeholder,
+      indexesOfPipedChars: maskedData.indexesOfPipedChars,
+      cursorTrapIndexes: maskedData.cursorTrapIndexes,
+    });
 
-  //   expect(adjustedCursor).toBe(2);
-  // });
+    expect(adjustedCursor).toBe(2);
+  });
 
   test('keepCharPositions -> cursor starting after masked char, before placeholder', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '11/11/2_019';
+    let inputValue = '11/11/2_019';
 
     let previous = {
       previousConformedValue: '11/11/_019',
@@ -409,7 +407,7 @@ describe('getAdjustedCursorPosition', () => {
       previousPlaceholder: '__/__/____',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 7,
       placeholderChar,
@@ -430,7 +428,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 7,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -444,7 +442,7 @@ describe('getAdjustedCursorPosition', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '11/112/_019';
+    let inputValue = '11/112/_019';
 
     let previous = {
       previousConformedValue: '11/11/_019',
@@ -452,7 +450,7 @@ describe('getAdjustedCursorPosition', () => {
       previousPlaceholder: '__/__/____',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 6,
       placeholderChar,
@@ -473,7 +471,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 6,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,

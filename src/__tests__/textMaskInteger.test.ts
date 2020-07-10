@@ -9,7 +9,7 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask({});
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
@@ -18,7 +18,7 @@ describe('createNumberMask', () => {
     };
 
     /** Simulate first input */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask: numberMask,
       currentCursorPosition: 1,
       guide: false,
@@ -38,7 +38,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -52,7 +52,7 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask({});
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1234';
+    let inputValue = '1234';
 
     let previous = {
       previousConformedValue: '123',
@@ -60,7 +60,7 @@ describe('createNumberMask', () => {
       previousRawValue: '123',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask: numberMask,
       currentCursorPosition: 4,
       guide: false,
@@ -80,7 +80,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 4,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -94,7 +94,7 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask({});
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1,23';
+    let inputValue = '1,23';
 
     let previous = {
       previousConformedValue: '1,234',
@@ -102,7 +102,7 @@ describe('createNumberMask', () => {
       previousRawValue: '1234',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask: numberMask,
       currentCursorPosition: 4,
       guide: false,
@@ -122,7 +122,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 4,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -136,7 +136,7 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask({});
     let maskedData;
     let adjustedCursor;
-    let changedValue = ',234';
+    let inputValue = ',234';
 
     let previous = {
       previousConformedValue: '1,234',
@@ -144,7 +144,7 @@ describe('createNumberMask', () => {
       previousRawValue: '1234',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask: numberMask,
       currentCursorPosition: 4,
       guide: false,
@@ -164,7 +164,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 4,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -188,7 +188,6 @@ describe('createNumberMask', () => {
       mask: numberMask,
       currentCursorPosition: 1,
       previousConformedValue: '',
-      previousPlaceholder: '',
       guide: false,
       placeholderChar,
     });
@@ -206,7 +205,7 @@ describe('createNumberMask', () => {
       previousPlaceholder: '',
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue: '0',
+      inputValue: '0',
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -222,7 +221,6 @@ describe('createNumberMask', () => {
       mask: numberMask,
       currentCursorPosition: 2,
       previousConformedValue: previousMaskedData.conformedValue,
-      previousPlaceholder: previousMaskedData.placeholder,
       guide: false,
       placeholderChar,
     });
@@ -240,7 +238,7 @@ describe('createNumberMask', () => {
       previousPlaceholder: '',
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue: '00',
+      inputValue: '00',
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -254,7 +252,7 @@ describe('createNumberMask', () => {
 
   test('createNumberMask -> allowLeadingZeros - If your value starts with zero, it shouldnt allow additional input', () => {
     let numberMask = createNumberMask();
-    let changedValue = '01';
+    let inputValue = '01';
 
     let previous = {
       previousConformedValue: '0',
@@ -263,7 +261,7 @@ describe('createNumberMask', () => {
       previousCursorPosition: 1,
     };
 
-    let maskedData = getMaskingData(changedValue, {
+    let maskedData = getMaskingData(inputValue, {
       mask: numberMask,
       currentCursorPosition: 2,
       guide: false,
@@ -283,7 +281,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -297,18 +295,24 @@ describe('createNumberMask', () => {
     let numberMask = createNumberMask({
       prefix: '$',
     });
-    let maskedData;
-    let changedValue = '';
+    let inputValue = '';
 
     let previous = {
       previousRawValue: '',
       previousConformedValue: '',
-      previousPlaceholder: '',
       previousCursorPosition: 0,
     };
 
-    /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    let maskedData = getMaskingData(inputValue, {
+      currentCursorPosition: 0,
+      guide: true,
+      mask: numberMask,
+      showMask: true,
+      placeholderChar,
+      ...previous,
+    });
+
+    let maskedDataWithNoGuide = getMaskingData(inputValue, {
       currentCursorPosition: 0,
       guide: false,
       mask: numberMask,
@@ -324,6 +328,14 @@ describe('createNumberMask', () => {
       indexesOfPipedChars: [],
       cursorTrapIndexes: [],
     });
+
+    expect(maskedDataWithNoGuide).toEqual({
+      conformedValue: '$',
+      rawValue: '',
+      placeholder: '$_',
+      indexesOfPipedChars: [],
+      cursorTrapIndexes: [],
+    });
   });
 
   test('prefix -> removing char right after prefix', () => {
@@ -331,7 +343,7 @@ describe('createNumberMask', () => {
       prefix: '$',
     });
     let maskedData;
-    let changedValue = '$23';
+    let inputValue = '$23';
 
     let previous = {
       previousRawValue: '123',
@@ -341,7 +353,7 @@ describe('createNumberMask', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 1,
       guide: false,
       mask: numberMask,
@@ -362,7 +374,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -375,7 +387,7 @@ describe('createNumberMask', () => {
   test('createNumberMask -> removing last digit in value with masked chars', () => {
     let numberMask = createNumberMask();
     let maskedData;
-    let changedValue = '1,234,56';
+    let inputValue = '1,234,56';
 
     let previous = {
       previousRawValue: '1234567',
@@ -385,7 +397,7 @@ describe('createNumberMask', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 8,
       guide: false,
       mask: numberMask,
@@ -405,7 +417,7 @@ describe('createNumberMask', () => {
   test('backspacing on masked char', () => {
     let numberMask = createNumberMask();
     let maskedData;
-    let changedValue = '1234';
+    let inputValue = '1234';
 
     let previous = {
       previousRawValue: '1234',
@@ -415,7 +427,7 @@ describe('createNumberMask', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 1,
       guide: false,
       mask: numberMask,
@@ -435,7 +447,7 @@ describe('createNumberMask', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,

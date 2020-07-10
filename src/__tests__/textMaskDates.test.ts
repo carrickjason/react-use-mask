@@ -8,7 +8,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '';
+    let inputValue = '';
 
     let previous = {
       previousConformedValue: '',
@@ -17,7 +17,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 0,
       guide: true,
       pipe,
@@ -40,7 +40,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '12_/__/____';
+    let inputValue = '12_/__/____';
 
     let previous = {
       previousConformedValue: '1_/__/____',
@@ -49,7 +49,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 2,
       guide: true,
       pipe,
@@ -71,7 +71,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 2,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -85,7 +85,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '11_/__/____';
+    let inputValue = '11_/__/____';
 
     let previous = {
       previousConformedValue: '1_/__/____',
@@ -94,7 +94,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 2,
       guide: true,
       pipe,
@@ -116,7 +116,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 2,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -130,7 +130,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '12/1_/____';
+    let inputValue = '12/1_/____';
 
     let previous = {
       previousConformedValue: '12/__/____',
@@ -138,7 +138,7 @@ describe('createAutoCorrectedDatePipe', () => {
       previousPlaceholder: '__/__/____',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 4,
       guide: true,
       pipe,
@@ -160,7 +160,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 4,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -174,7 +174,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '4';
+    let inputValue = '4';
 
     let previous = {
       previousConformedValue: '',
@@ -183,7 +183,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 1,
       guide: true,
       pipe,
@@ -205,7 +205,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 1,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -219,7 +219,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '0/04/2019';
+    let inputValue = '0/04/2019';
 
     let previous = {
       previousRawValue: '04042019',
@@ -228,7 +228,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 1,
       guide: true,
       pipe,
@@ -251,7 +251,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 1,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -265,7 +265,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '04/04/019';
+    let inputValue = '04/04/019';
 
     let previous = {
       previousRawValue: '04042019',
@@ -274,7 +274,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 6,
       guide: true,
       pipe,
@@ -297,7 +297,7 @@ describe('createAutoCorrectedDatePipe', () => {
         ...previous,
         currentCursorPosition: 6,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -311,7 +311,7 @@ describe('createAutoCorrectedDatePipe', () => {
     let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     let placeholderChar = '_';
     let maskedData;
-    let changedValue = '04/042/019';
+    let inputValue = '04/042/019';
 
     let previous = {
       previousRawValue: '0404019',
@@ -320,7 +320,7 @@ describe('createAutoCorrectedDatePipe', () => {
     };
 
     /** Simulating removing integer before decimal */
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 6,
       guide: true,
       pipe,
@@ -342,7 +342,7 @@ describe('createAutoCorrectedDatePipe', () => {
       getAdjustedCursorPosition({
         currentCursorPosition: 6,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholderChar,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,

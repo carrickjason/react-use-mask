@@ -1,3 +1,5 @@
+import { PipeResult } from 'types';
+
 const maxDayPerMonth = [31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const defaultMax = {
   DD: 31,
@@ -36,7 +38,7 @@ export function createAutoCorrectedDatePipe(
 ) {
   const dateFormatArray = dateFormat.split(formatCharsRegex);
 
-  return function(conformedValue: string) {
+  return function(conformedValue: string): PipeResult {
     const indexesOfPipedChars: number[] = [];
     const conformedValueArr = conformedValue.split('');
 
@@ -90,7 +92,7 @@ export function createAutoCorrectedDatePipe(
     });
 
     if (isInvalid) {
-      return false;
+      return {};
     }
 
     return {

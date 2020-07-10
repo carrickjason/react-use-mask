@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { getMaskingData } from './getMaskingData';
 import { getAdjustedCursorPosition } from './getAdjustedCursorPosition';
-import { UseMaskArgs, MaskingData, EventRef, MaskedInputProps } from './types';
+import { UseMaskArgs, MaskingData, MaskedInputProps } from './types';
+
+type EventRef = null | {
+  value: string;
+  start: number | null;
+  target: HTMLInputElement;
+};
 
 export function useMask({
   value = '',
@@ -44,13 +50,12 @@ export function useMask({
         conformedValue: previousConformedValue,
         placeholder: previousPlaceholder,
       } = masked.current;
-      let changedValue = (currentEvent ? currentEvent.value : value) || '';
+      let inputValue = (currentEvent ? currentEvent.value : value) || '';
       let start = currentEvent?.start ?? 0;
 
-      let maskedData = getMaskingData(changedValue, {
+      let maskedData = getMaskingData(inputValue, {
         currentCursorPosition: start,
         previousConformedValue,
-        previousPlaceholder,
         showMask,
         guide,
         keepCharPositions,
@@ -64,7 +69,7 @@ export function useMask({
         previousConformedValue: masked.current.conformedValue,
         currentCursorPosition: start,
         conformedValue: maskedData.conformedValue,
-        changedValue,
+        inputValue,
         placeholder: maskedData.placeholder,
         indexesOfPipedChars: maskedData.indexesOfPipedChars,
         cursorTrapIndexes: maskedData.cursorTrapIndexes,
@@ -72,8 +77,7 @@ export function useMask({
       });
 
       const { conformedValue } = maskedData;
-
-      if (changedValue && changedValue === conformedValue) {
+      if (inputValue && inputValue === conformedValue) {
         conformedValue !== previousConformedValue && refresh();
       } else if (conformedValue !== value) {
         onChange(conformedValue);

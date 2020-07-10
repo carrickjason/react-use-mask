@@ -7,7 +7,7 @@ export type AdjustCursorConfig = {
   placeholderChar: string;
   previousConformedValue: string;
   previousPlaceholder: string;
-  changedValue: string;
+  inputValue: string;
   forceJumpToEnd?: boolean;
 };
 
@@ -20,16 +20,16 @@ export function getAdjustedCursorPosition({
   placeholderChar,
   previousConformedValue = '',
   previousPlaceholder = '',
-  changedValue,
+  inputValue,
   forceJumpToEnd = false,
 }: AdjustCursorConfig): number {
-  if (currentCursorPosition === 0 || !changedValue.length || forceJumpToEnd) {
+  if (currentCursorPosition === 0 || !inputValue.length || forceJumpToEnd) {
     return forceJumpToEnd ? conformedValue.length : 0;
   }
 
   // This tells us how long the edit is. If user modified input from `(2__)` to `(243__)`,
   // we know the user in this instance pasted two characters
-  const editLength = changedValue.length - previousConformedValue.length;
+  const editLength = inputValue.length - previousConformedValue.length;
 
   // If the edit length is positive, that means the user is adding characters, not deleting.
   const isAddition = editLength > 0;
@@ -55,7 +55,7 @@ export function getAdjustedCursorPosition({
   }
 
   // For a mask like (111), if the `previousConformedValue` is (1__) and user attempts to enter
-  // `f` so the `changedValue` becomes (1f__), the new `conformedValue` would be (1__), which is the
+  // `f` so the `inputValue` becomes (1f__), the new `conformedValue` would be (1__), which is the
   // same as the original `previousConformedValue`. We handle this case differently for cursor
   // positioning.
   const possiblyHasRejectedChar =
@@ -75,9 +75,9 @@ export function getAdjustedCursorPosition({
     // We do that by seeing what character lies immediately before the cursor, and then look for that
     // same character in the conformed input and place the cursor there.
     const normalizedConformedValue = conformedValue.toLowerCase();
-    const normalizedChangedValue = changedValue.toLowerCase();
+    const normalizedInputValue = inputValue.toLowerCase();
 
-    const leftHalfChars = normalizedChangedValue
+    const leftHalfChars = normalizedInputValue
       .substr(0, currentCursorPosition)
       .split('');
 
@@ -127,10 +127,10 @@ export function getAdjustedCursorPosition({
       (maskLengthChanged || targetIsMaskMovingLeft) &&
       previousLeftMaskChars > 0 &&
       placeholder.indexOf(targetChar) > -1 &&
-      changedValue[currentCursorPosition] !== undefined
+      inputValue[currentCursorPosition] !== undefined
     ) {
       trackRightCharacter = true;
-      targetChar = changedValue[currentCursorPosition];
+      targetChar = inputValue[currentCursorPosition];
     }
 
     // It is possible that `targetChar` will appear multiple times in the conformed value.
@@ -241,7 +241,7 @@ export function getAdjustedCursorPosition({
         // we found the character and then place the cursor right before it
 
         if (
-          // `targetChar` should be in `conformedValue`, since it was in `changedValue`, just
+          // `targetChar` should be in `conformedValue`, since it was in `inputValue`, just
           // to the right of the cursor
           conformedValue[i] === targetChar ||
           // If a cursor trap was set by a mask function, we need to stop at the trap.

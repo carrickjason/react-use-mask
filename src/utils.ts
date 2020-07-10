@@ -1,4 +1,44 @@
-import { MaskIndex } from './types';
+import { MaskIndex, MaskOrMaskGetter, Mask } from './types';
+
+export function processMask(
+  mask: MaskOrMaskGetter,
+  {
+    inputValue,
+    currentCursorPosition,
+    previousConformedValue,
+    placeholderChar,
+  }: {
+    inputValue: string;
+    currentCursorPosition: number;
+    previousConformedValue: string;
+    placeholderChar: string;
+  }
+): { processedMask: Mask; cursorTrapIndexes?: number[] } {
+  if (typeof mask === 'function') {
+    let processedMask = mask(inputValue, {
+      currentCursorPosition,
+      previousConformedValue,
+      placeholderChar,
+    });
+
+    if (!processedMask) return { processedMask: false };
+
+    // mask functions can setup cursor traps to have some control over how the cursor moves. We need to process
+    // the mask for any cursor traps. `processCursorTraps` will remove the cursor traps from the mask and return
+    // the indexes of the cursor traps.
+    const { maskWithoutCursorTraps, indexes } = processCursorTraps(
+      processedMask
+    );
+
+    // And we need to store these indexes because they're needed by `getAdjustedCursorPosition`
+    return {
+      processedMask: maskWithoutCursorTraps,
+      cursorTrapIndexes: indexes,
+    };
+  }
+
+  return { processedMask: mask };
+}
 
 export function convertMaskToPlaceholder(
   mask: MaskIndex[] = [],
@@ -47,66 +87,18 @@ export function processCursorTraps(
 export function getRawValue(
   value: string = '',
   placeholder: string = '',
-  placeholderChar: string = '_',
-  includedChars: MaskIndex[] = []
+  placeholderChar: string = '_'
 ): string {
   if (value === '' || placeholder === '') {
     return value;
   }
 
   return placeholder.split('').reduce((result, char, i) => {
-    let isIncludedChar = includedChars.some(charOrRegex =>
-      charOrRegex instanceof RegExp
-        ? charOrRegex.test(char)
-        : charOrRegex === char
-    );
-
     let raw =
-      (char === placeholderChar || isIncludedChar) && value[i]
+      char === placeholderChar && value[i]
         ? `${result}${value[i] === placeholderChar ? '' : value[i]}`
         : result;
 
     return raw;
   }, '');
-}
-
-export function getSafeRawValue(inputValue: string): string {
-  if (typeof inputValue === 'string') {
-    return inputValue;
-  } else if (typeof inputValue === 'number') {
-    return String(inputValue);
-  } else if (inputValue === undefined || inputValue === null) {
-    return '';
-  } else {
-    throw new Error(
-      "The 'value' provided to Text Mask needs to be a string or a number. The value " +
-        `received was:\n\n ${JSON.stringify(inputValue)}`
-    );
-  }
-}
-
-export function mergeWithPlaceholder(
-  value: string,
-  placeholder: string,
-  placeholderChar: string
-): string {
-  if (!placeholder) {
-    return value;
-  }
-
-  let merged = placeholder.split('').reduce(
-    ({ conformed, remainder, maskedCount }, char, i) => {
-      let currentValue = value[i - maskedCount];
-      let shouldFill = char === placeholderChar || char === currentValue;
-
-      return {
-        conformed: `${conformed}${shouldFill ? currentValue : char}`,
-        remainder: shouldFill ? remainder.substr(1) : remainder,
-        maskedCount: !shouldFill ? maskedCount + 1 : maskedCount,
-      };
-    },
-    { conformed: '', remainder: value, maskedCount: 0 }
-  );
-
-  return `${merged.conformed}${merged.remainder}`;
 }

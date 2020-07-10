@@ -25,7 +25,7 @@ export function createNumberMask({
   const thousandsSeparatorSymbolLength =
     (thousandsSeparatorSymbol && thousandsSeparatorSymbol.length) || 0;
 
-  function numberMask(rawValue = '') {
+  function numberMask(rawValue = ''): MaskIndex[] {
     const rawValueLength = rawValue.length;
 
     if (
@@ -42,7 +42,8 @@ export function createNumberMask({
     }
 
     const isNegative = rawValue[0] === minus && allowNegative;
-    //If negative remove "-" sign
+
+    // If negative remove "-" sign
     if (isNegative) {
       rawValue = rawValue.toString().substr(1);
     }
@@ -151,13 +152,16 @@ export function createNumberMask({
   return numberMask;
 }
 
-function convertToMask(strNumber: string) {
+function convertToMask(strNumber: string): MaskIndex[] {
   return strNumber
     .split('')
     .map(char => (digitRegExp.test(char) ? digitRegExp : char));
 }
 
 // http://stackoverflow.com/a/10899795/604296
-function addThousandsSeparator(n: string, thousandsSeparatorSymbol: string) {
-  return n.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparatorSymbol);
+function addThousandsSeparator(
+  value: string,
+  thousandsSeparatorSymbol: string
+): string {
+  return value.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparatorSymbol);
 }

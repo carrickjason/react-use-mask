@@ -27,17 +27,15 @@ export type MaskAndPipeConfig = {
 };
 
 export type PipeResult = {
-  value: string;
+  value?: string;
   indexesOfPipedChars?: number[];
-  rejected?: boolean;
 };
 
 export type Pipe = (
+  inputValue: string,
   conformedValue: string,
-  config: MaskAndPipeConfig & {
-    rawValue: string;
-  }
-) => false | string | PipeResult;
+  config: MaskAndPipeConfig
+) => PipeResult;
 
 export type MaskIndex = RegExp | string;
 export type Mask = MaskIndex[] | false;
@@ -45,7 +43,6 @@ export type MaskAndPipe = {
   mask: Mask;
   pipe: Pipe;
 };
-export type MaskProp = Mask | MaskAndPipe;
 
 export type MaskGetter = (
   rawValue: string,
@@ -56,7 +53,7 @@ export type MaskGetter = (
   }
 ) => Mask;
 
-export type MaskOrMaskGetter = MaskProp | MaskGetter;
+export type MaskOrMaskGetter = Mask | MaskGetter;
 
 export type MaskingData = {
   conformedValue: string;
@@ -64,10 +61,4 @@ export type MaskingData = {
   placeholder: string;
   indexesOfPipedChars: number[];
   cursorTrapIndexes: number[];
-};
-
-export type EventRef = null | {
-  value: string;
-  start: number | null;
-  target: HTMLInputElement;
 };
