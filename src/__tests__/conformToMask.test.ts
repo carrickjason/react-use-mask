@@ -33,26 +33,26 @@ describe('conformToMask', () => {
     });
 
     it('places input that was added in the position of a masked char', () => {
-      let { conformedValue } = conformToMask('11/_', [digit, '/', digit], {
+      let { conformedValue } = conformToMask('12/_', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
         previousConformedValue: '1/_',
       });
-      expect(conformedValue).toBe('1/1');
+      expect(conformedValue).toBe('1/2');
     });
 
     it('handles pasted input', () => {
-      let { conformedValue } = conformToMask('11', [digit, '/', digit], {
+      let { conformedValue } = conformToMask('12', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
         previousConformedValue: '',
       });
-      expect(conformedValue).toBe('1/1');
+      expect(conformedValue).toBe('1/2');
     });
 
     it('handles pasted input with masked chars', () => {
       let { conformedValue } = conformToMask(
-        '1/1//',
+        '1/2//',
         [digit, '/', '/', '/', digit],
         {
           ...defaultConfig,
@@ -60,14 +60,14 @@ describe('conformToMask', () => {
           previousConformedValue: '',
         }
       );
-      expect(conformedValue).toBe('1///1');
+      expect(conformedValue).toBe('1///2');
     });
 
     it('handles simple deletion from end of value', () => {
       let { conformedValue } = conformToMask('1/', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
-        previousConformedValue: '1/1',
+        previousConformedValue: '1/2',
       });
       expect(conformedValue).toBe('1/_');
     });
@@ -79,7 +79,7 @@ describe('conformToMask', () => {
         {
           ...defaultConfig,
           currentCursorPosition: 1,
-          previousConformedValue: '11/_',
+          previousConformedValue: '12/_',
         }
       );
       expect(conformedValue).toBe('1_/_');
@@ -96,15 +96,15 @@ describe('conformToMask', () => {
 
     it('handles deletion of selection', () => {
       let { conformedValue } = conformToMask(
-        '11',
+        '14',
         [digit, digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 1,
-          previousConformedValue: '11/11',
+          previousConformedValue: '12/34',
         }
       );
-      expect(conformedValue).toBe('11/__');
+      expect(conformedValue).toBe('14/__');
     });
   });
 
@@ -138,26 +138,26 @@ describe('conformToMask', () => {
     });
 
     it('places input that was added in the position of a masked char', () => {
-      let { conformedValue } = conformToMask('11/', [digit, '/', digit], {
+      let { conformedValue } = conformToMask('12/', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
         previousConformedValue: '1/',
       });
-      expect(conformedValue).toBe('1/1');
+      expect(conformedValue).toBe('1/2');
     });
 
     it('handles pasted input', () => {
-      let { conformedValue } = conformToMask('11', [digit, '/', digit], {
+      let { conformedValue } = conformToMask('12', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
         previousConformedValue: '',
       });
-      expect(conformedValue).toBe('1/1');
+      expect(conformedValue).toBe('1/2');
     });
 
     it('handles pasted input with masked chars', () => {
       let { conformedValue } = conformToMask(
-        '1/1//',
+        '1/2//',
         [digit, '/', '/', '/', digit],
         {
           ...defaultConfig,
@@ -165,14 +165,14 @@ describe('conformToMask', () => {
           previousConformedValue: '',
         }
       );
-      expect(conformedValue).toBe('1///1');
+      expect(conformedValue).toBe('1///2');
     });
 
     it('handles simple deletion from end of value', () => {
       let { conformedValue } = conformToMask('1/', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
-        previousConformedValue: '1/1',
+        previousConformedValue: '1/2',
       });
       expect(conformedValue).toBe('1/');
     });
@@ -181,7 +181,7 @@ describe('conformToMask', () => {
       let { conformedValue } = conformToMask('1/', [digit, digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 1,
-        previousConformedValue: '11/',
+        previousConformedValue: '12/',
       });
       expect(conformedValue).toBe('1');
     });
@@ -197,15 +197,15 @@ describe('conformToMask', () => {
 
     it('handles deletion of selection', () => {
       let { conformedValue } = conformToMask(
-        '11',
+        '14',
         [digit, digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 1,
-          previousConformedValue: '11/11',
+          previousConformedValue: '12/34',
         }
       );
-      expect(conformedValue).toBe('11');
+      expect(conformedValue).toBe('14');
     });
   });
 
@@ -220,63 +220,63 @@ describe('conformToMask', () => {
 
     it('handles entering char between existing chars', () => {
       let { conformedValue } = conformToMask(
-        '11_/_1',
+        '12_/_4',
         [digit, digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 2,
-          previousConformedValue: '1_/_1',
+          previousConformedValue: '1_/_4',
         }
       );
-      expect(conformedValue).toBe('11/_1');
+      expect(conformedValue).toBe('12/_4');
     });
 
     it('handles entering char between existing chars in the position of a masked char', () => {
       let { conformedValue } = conformToMask(
-        '11/_1',
+        '12/_3',
         [digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 2,
-          previousConformedValue: '1/_1',
+          previousConformedValue: '1/_3',
         }
       );
-      expect(conformedValue).toBe('1/11');
+      expect(conformedValue).toBe('1/23');
     });
 
     it('handles pasting chars between existing chars', () => {
       let { conformedValue } = conformToMask(
-        '111_/_1',
+        '123_/_4',
         [digit, digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 3,
-          previousConformedValue: '1_/_1',
+          previousConformedValue: '1_/_4',
         }
       );
-      expect(conformedValue).toBe('11/11');
+      expect(conformedValue).toBe('12/34');
     });
 
     it('handles simple deletion from end of value', () => {
       let { conformedValue } = conformToMask('1/', [digit, '/', digit], {
         ...defaultConfig,
         currentCursorPosition: 2,
-        previousConformedValue: '1/1',
+        previousConformedValue: '1/2',
       });
       expect(conformedValue).toBe('1/_');
     });
 
     it('handles deletion of single character mid-value', () => {
       let { conformedValue } = conformToMask(
-        '1/1',
+        '1/3',
         [digit, digit, '/', digit],
         {
           ...defaultConfig,
           currentCursorPosition: 1,
-          previousConformedValue: '11/1',
+          previousConformedValue: '12/3',
         }
       );
-      expect(conformedValue).toBe('1_/1');
+      expect(conformedValue).toBe('1_/3');
     });
 
     it('handles deletion of masked character', () => {
@@ -290,15 +290,15 @@ describe('conformToMask', () => {
 
     it('handles deletion of selection', () => {
       let { conformedValue } = conformToMask(
-        '11',
+        '14',
         [digit, digit, '/', digit, digit],
         {
           ...defaultConfig,
           currentCursorPosition: 1,
-          previousConformedValue: '11/11',
+          previousConformedValue: '12/34',
         }
       );
-      expect(conformedValue).toBe('1_/_1');
+      expect(conformedValue).toBe('1_/_4');
     });
   });
 });

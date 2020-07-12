@@ -14,7 +14,6 @@ describe('createNumberMask', () => {
     let previous = {
       previousConformedValue: '',
       previousPlaceholder: '',
-      previousRawValue: '',
     };
 
     /** Simulate first input */
@@ -57,7 +56,6 @@ describe('createNumberMask', () => {
     let previous = {
       previousConformedValue: '123',
       previousPlaceholder: '___',
-      previousRawValue: '123',
     };
 
     maskedData = getMaskingData(inputValue, {
@@ -99,7 +97,6 @@ describe('createNumberMask', () => {
     let previous = {
       previousConformedValue: '1,234',
       previousPlaceholder: '_,___',
-      previousRawValue: '1234',
     };
 
     maskedData = getMaskingData(inputValue, {
@@ -141,7 +138,6 @@ describe('createNumberMask', () => {
     let previous = {
       previousConformedValue: '1,234',
       previousPlaceholder: '_,___',
-      previousRawValue: '1234',
     };
 
     maskedData = getMaskingData(inputValue, {
@@ -250,15 +246,13 @@ describe('createNumberMask', () => {
     previousMaskedData = maskedData;
   });
 
-  test('createNumberMask -> allowLeadingZeros - If your value starts with zero, it shouldnt allow additional input', () => {
+  test('allowLeadingZeros - If your value starts with zero, it shouldnt allow additional input', () => {
     let numberMask = createNumberMask();
     let inputValue = '01';
 
     let previous = {
       previousConformedValue: '0',
-      previousRawValue: '0',
       previousPlaceholder: '_',
-      previousCursorPosition: 1,
     };
 
     let maskedData = getMaskingData(inputValue, {
@@ -291,16 +285,14 @@ describe('createNumberMask', () => {
     expect(adjustedCursor).toBe(0);
   });
 
-  test('createNumberMask -> prefix -> result when first focusing input', () => {
+  test('prefix -> result when first focusing input', () => {
     let numberMask = createNumberMask({
       prefix: '$',
     });
     let inputValue = '';
 
     let previous = {
-      previousRawValue: '',
       previousConformedValue: '',
-      previousCursorPosition: 0,
     };
 
     let maskedData = getMaskingData(inputValue, {
@@ -346,10 +338,8 @@ describe('createNumberMask', () => {
     let inputValue = '$23';
 
     let previous = {
-      previousRawValue: '123',
       previousConformedValue: '$123',
       previousPlaceholder: '$___',
-      previousCursorPosition: 2,
     };
 
     /** Simulating removing integer before decimal */
@@ -384,16 +374,14 @@ describe('createNumberMask', () => {
     expect(adjustedCursor).toBe(0);
   });
 
-  test('createNumberMask -> removing last digit in value with masked chars', () => {
+  test('removing last digit in value with masked chars', () => {
     let numberMask = createNumberMask();
     let maskedData;
     let inputValue = '1,234,56';
 
     let previous = {
-      previousRawValue: '1234567',
       previousConformedValue: '1,234,567',
       previousPlaceholder: '_,___,___',
-      previousCursorPosition: 9,
     };
 
     /** Simulating removing integer before decimal */
@@ -420,10 +408,8 @@ describe('createNumberMask', () => {
     let inputValue = '1234';
 
     let previous = {
-      previousRawValue: '1234',
       previousConformedValue: '1,234',
       previousPlaceholder: '_,___',
-      previousCursorPosition: 2,
     };
 
     /** Simulating removing integer before decimal */

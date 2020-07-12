@@ -19,7 +19,7 @@ export function getMaskingData(
     currentCursorPosition,
     previousConformedValue,
     mask,
-    guide = false,
+    guide = true,
     pipe,
     placeholderChar,
     keepCharPositions = false,
@@ -56,7 +56,8 @@ export function getMaskingData(
 
   let piped =
     typeof pipe === 'function'
-      ? pipe(inputValue, conformedValue, {
+      ? pipe(conformedValue, {
+          inputValue,
           previousConformedValue,
           guide,
           placeholderChar,

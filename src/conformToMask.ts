@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { MaskIndex } from './types';
 import { convertMaskToPlaceholder } from './utils';
 
@@ -20,8 +19,9 @@ export function conformToMask(
     placeholderChar = '_',
     currentCursorPosition,
     keepCharPositions,
-    cursorTrapIndexes,
-  }: ConformConfig
+  }: // TODO: need to handle cursor trap indexes
+  // cursorTrapIndexes,
+  ConformConfig
 ): { conformedValue: string; meta?: { someCharsRejected: boolean } } {
   let isGuide = guide || keepCharPositions;
   let inputChars = inputValue.split('');
@@ -36,26 +36,27 @@ export function conformToMask(
 
   if (keepCharPositions) {
     if (isAddition) {
-      inputChars = [].concat(
-        inputChars.slice(0, indexOfLastChange),
-        inputChars.slice(indexOfLastChange + editDistance)
-      );
+      inputChars = [
+        ...inputChars.slice(0, indexOfLastChange),
+        ...inputChars.slice(indexOfLastChange + editDistance),
+      ];
     } else {
-      let previousInputChars = previousConformedValue.split('');
       let placeholderForRemovedChars = convertMaskToPlaceholder(
         mask.slice(indexOfFirstChange, indexOfLastChange)
       ).split('');
-      inputChars = [].concat(
-        previousInputChars.slice(0, indexOfFirstChange),
-        placeholderForRemovedChars,
-        previousInputChars.slice(indexOfLastChange - 1)
-      );
+      let inputCharsBeforeRemoved = inputChars.slice(0, indexOfFirstChange);
+      let inputCharsAfterRemoved = inputChars.slice(indexOfFirstChange);
+      inputChars = [
+        ...inputCharsBeforeRemoved,
+        ...placeholderForRemovedChars,
+        ...inputCharsAfterRemoved,
+      ];
     }
   }
 
-  let conformedChars: string[] = [].concat(
-    previousConformedValue.split('').slice(0, indexOfFirstChange)
-  );
+  let conformedChars: string[] = previousConformedValue
+    .split('')
+    .slice(0, indexOfFirstChange);
 
   let inputIndex = indexOfFirstChange;
   let maskIndex = indexOfFirstChange;
@@ -63,7 +64,7 @@ export function conformToMask(
   while (maskIndex < maskLength) {
     let char = inputChars[inputIndex];
     let maskAtIndex = mask[maskIndex];
-    let hasMoreInputToProcess = inputIndex < inputIndex.length - 1;
+    let hasMoreInputToProcess = inputIndex < inputChars.length - 1;
 
     if (maskAtIndex instanceof RegExp) {
       let isCharAcceptable = char === placeholderChar || maskAtIndex.test(char);
@@ -73,7 +74,7 @@ export function conformToMask(
       }
 
       conformedChars = conformedChars.concat(
-        isCharAcceptable ? char : isGuide && placeholderChar
+        isCharAcceptable ? char : isGuide ? placeholderChar : ''
       );
 
       maskIndex++;
@@ -101,8 +102,6 @@ export function conformToMask(
       }
     }
   }
-
-  // TODO: need to handle cursor trap indexes
 
   return { conformedValue: conformedChars.filter(Boolean).join('') };
 }

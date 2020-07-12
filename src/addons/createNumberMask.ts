@@ -25,30 +25,30 @@ export function createNumberMask({
   const thousandsSeparatorSymbolLength =
     (thousandsSeparatorSymbol && thousandsSeparatorSymbol.length) || 0;
 
-  function numberMask(rawValue = ''): MaskIndex[] {
-    const rawValueLength = rawValue.length;
+  function numberMask(inputValue = ''): MaskIndex[] {
+    const inputValueLength = inputValue.length;
 
     if (
-      rawValue === '' ||
-      (rawValue[0] === prefix[0] && rawValueLength === 1)
+      inputValue === '' ||
+      (inputValue[0] === prefix[0] && inputValueLength === 1)
     ) {
       return (prefix.split('') as MaskIndex[])
         .concat(digitRegExp)
         .concat(suffix.split(''));
-    } else if (rawValue === decimalSymbol && allowDecimal) {
+    } else if (inputValue === decimalSymbol && allowDecimal) {
       return (prefix.split('') as MaskIndex[])
         .concat(['0', decimalSymbol, digitRegExp])
         .concat(suffix.split(''));
     }
 
-    const isNegative = rawValue[0] === minus && allowNegative;
+    const isNegative = inputValue[0] === minus && allowNegative;
 
     // If negative remove "-" sign
     if (isNegative) {
-      rawValue = rawValue.toString().substr(1);
+      inputValue = inputValue.toString().substr(1);
     }
 
-    const indexOfLastDecimal = rawValue.lastIndexOf(decimalSymbol);
+    const indexOfLastDecimal = inputValue.lastIndexOf(decimalSymbol);
     const hasDecimal = indexOfLastDecimal !== -1;
 
     let integer;
@@ -56,23 +56,23 @@ export function createNumberMask({
     let mask: MaskIndex[];
 
     // remove the suffix
-    if (rawValue.slice(suffixLength * -1) === suffix) {
-      rawValue = rawValue.slice(0, suffixLength * -1);
+    if (inputValue.slice(suffixLength * -1) === suffix) {
+      inputValue = inputValue.slice(0, suffixLength * -1);
     }
 
     if (hasDecimal && (allowDecimal || requireDecimal)) {
-      integer = rawValue.slice(
-        rawValue.slice(0, prefixLength) === prefix ? prefixLength : 0,
+      integer = inputValue.slice(
+        inputValue.slice(0, prefixLength) === prefix ? prefixLength : 0,
         indexOfLastDecimal
       );
 
-      fraction = rawValue.slice(indexOfLastDecimal + 1, rawValueLength);
+      fraction = inputValue.slice(indexOfLastDecimal + 1, inputValueLength);
       fraction = convertToMask(fraction.replace(nonDigitsRegExp, ''));
     } else {
-      if (rawValue.slice(0, prefixLength) === prefix) {
-        integer = rawValue.slice(prefixLength);
+      if (inputValue.slice(0, prefixLength) === prefix) {
+        integer = inputValue.slice(prefixLength);
       } else {
-        integer = rawValue;
+        integer = inputValue;
       }
     }
 
@@ -105,7 +105,7 @@ export function createNumberMask({
     mask = convertToMask(integer);
 
     if ((hasDecimal && allowDecimal) || requireDecimal === true) {
-      if (rawValue[indexOfLastDecimal - 1] !== decimalSymbol) {
+      if (inputValue[indexOfLastDecimal - 1] !== decimalSymbol) {
         mask.push(cursorTrap);
       }
 
@@ -121,7 +121,7 @@ export function createNumberMask({
 
       if (
         requireDecimal === true &&
-        rawValue[indexOfLastDecimal - 1] === decimalSymbol
+        inputValue[indexOfLastDecimal - 1] === decimalSymbol
       ) {
         mask.push(digitRegExp);
       }
