@@ -55,7 +55,7 @@ describe('useMask', () => {
     expect(input.value).toBe('1/ ');
 
     fireEvent.change(input, { target: { value: '1', selectionStart: 1 } });
-    expect(input.selectionStart).toBe(0);
+    expect(input.selectionStart).toBe(1);
     expect(input.value).toBe('1/ ');
   });
 });

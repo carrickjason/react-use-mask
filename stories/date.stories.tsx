@@ -13,8 +13,7 @@ const DateInput = ({ initial = '', config = {} }) => {
     mask: [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/],
     onChange: setValue,
     value,
-    keepCharPositions: boolean('keepCharPositions', true),
-    guide: boolean('guide', true),
+    keepCharPositions: true,
     placeholderChar: ' ',
     ...config,
   });

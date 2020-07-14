@@ -25,14 +25,13 @@ export function conformToMask(
 ): { conformedValue: string; meta?: { someCharsRejected: boolean } } {
   let isGuide = guide || keepCharPositions;
   let inputChars = inputValue.split('');
-  let inputValueLength = inputValue.length;
   let previousConformedValueLength = previousConformedValue.length;
-  let maskLength = mask.length;
-  let editDistance = inputValueLength - previousConformedValueLength;
+  let editDistance = inputValue.length - previousConformedValueLength;
   let isAddition = editDistance > 0;
   let indexOfFirstChange =
     currentCursorPosition + (isAddition ? -editDistance : 0);
   let indexOfLastChange = indexOfFirstChange + Math.abs(editDistance);
+  let maskLength = mask.length;
 
   if (keepCharPositions) {
     if (isAddition) {
@@ -42,7 +41,8 @@ export function conformToMask(
       ];
     } else {
       let placeholderForRemovedChars = convertMaskToPlaceholder(
-        mask.slice(indexOfFirstChange, indexOfLastChange)
+        mask.slice(indexOfFirstChange, indexOfLastChange),
+        placeholderChar
       ).split('');
       let inputCharsBeforeRemoved = inputChars.slice(0, indexOfFirstChange);
       let inputCharsAfterRemoved = inputChars.slice(indexOfFirstChange);
@@ -51,6 +51,9 @@ export function conformToMask(
         ...placeholderForRemovedChars,
         ...inputCharsAfterRemoved,
       ];
+
+      // TODO is this all I need? can I just return here?
+      // return { conformedValue: inputChars.join('') };
     }
   }
 
