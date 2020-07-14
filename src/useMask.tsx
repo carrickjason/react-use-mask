@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { getMaskingData } from './getMaskingData';
 import { getAdjustedCursorPosition } from './getAdjustedCursorPosition';
-import { UseMaskArgs, MaskingData, EventRef, MaskedInputProps } from './types';
+import { UseMaskArgs, MaskingData, MaskedInputProps } from './types';
+
+type EventRef = null | {
+  value: string;
+  selectionStart: number | null;
+  target: HTMLInputElement;
+};
 
 export function useMask({
   value = '',
@@ -28,7 +34,7 @@ export function useMask({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     event.current = {
       value: e.target.value,
-      start: e.target.selectionStart,
+      selectionStart: e.target.selectionStart,
       target: e.target,
     };
     refresh();
@@ -39,18 +45,12 @@ export function useMask({
     let cursorPosition = 0;
 
     if (currentEvent || !value || value !== masked.current.conformedValue) {
-      // grab previous masekdValues
-      let {
-        conformedValue: previousConformedValue,
-        placeholder: previousPlaceholder,
-      } = masked.current;
-      let changedValue = (currentEvent ? currentEvent.value : value) || '';
-      let start = currentEvent?.start ?? 0;
+      let inputValue = (currentEvent ? currentEvent.value : value) || '';
+      let selectionStart = currentEvent?.selectionStart ?? 0;
 
-      let maskedData = getMaskingData(changedValue, {
-        currentCursorPosition: start,
-        previousConformedValue,
-        previousPlaceholder,
+      let updatedMaskedData = getMaskingData(inputValue, {
+        currentCursorPosition: selectionStart,
+        previousConformedValue: masked.current.conformedValue,
         showMask,
         guide,
         keepCharPositions,
@@ -62,24 +62,31 @@ export function useMask({
       cursorPosition = getAdjustedCursorPosition({
         previousPlaceholder: masked.current.placeholder,
         previousConformedValue: masked.current.conformedValue,
-        currentCursorPosition: start,
-        conformedValue: maskedData.conformedValue,
-        changedValue,
-        placeholder: maskedData.placeholder,
-        indexesOfPipedChars: maskedData.indexesOfPipedChars,
-        cursorTrapIndexes: maskedData.cursorTrapIndexes,
+        currentCursorPosition: selectionStart,
+        conformedValue: updatedMaskedData.conformedValue,
+        inputValue,
+        placeholder: updatedMaskedData.placeholder,
+        indexesOfPipedChars: updatedMaskedData.indexesOfPipedChars,
+        cursorTrapIndexes: updatedMaskedData.cursorTrapIndexes,
         placeholderChar,
       });
 
-      const { conformedValue } = maskedData;
+      const { conformedValue } = updatedMaskedData;
 
-      if (changedValue && changedValue === conformedValue) {
-        conformedValue !== previousConformedValue && refresh();
+      // When a change results in the same conformedValue as previous
+      // (ie: backspacing a masked character with keepCharPositions) we need to
+      // force an update so that our changes to the cursor position can be
+      // made in the effect return call
+      if (
+        masked.current.conformedValue &&
+        masked.current.conformedValue === conformedValue
+      ) {
+        refresh();
       } else if (conformedValue !== value) {
         onChange(conformedValue);
       }
 
-      masked.current = maskedData;
+      masked.current = updatedMaskedData;
     }
 
     return () => {

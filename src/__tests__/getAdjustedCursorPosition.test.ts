@@ -3,29 +3,21 @@ import { getAdjustedCursorPosition } from '../getAdjustedCursorPosition';
 import { createNumberMask } from '../addons';
 
 let placeholderChar = '_';
-
-function mockPipe(value: string) {
-  return {
-    value: `0${value}`,
-    indexesOfPipedChars: [0],
-  };
-}
+let digit = /\d/;
 
 describe('getAdjustedCursorPosition', () => {
   test('Standard input, not masked chars, piped chars, or traps', () => {
-    let mask = [/\d/];
+    let mask = [digit];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
-      previousRawValue: '',
       previousPlaceholder: '',
-      previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -44,7 +36,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -55,19 +47,17 @@ describe('getAdjustedCursorPosition', () => {
   });
 
   test('Input with masked char before', () => {
-    let mask = ['(', /\d/];
+    let mask = ['(', digit];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
-      previousRawValue: '',
       previousPlaceholder: '',
-      previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -86,7 +76,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -97,19 +87,17 @@ describe('getAdjustedCursorPosition', () => {
   });
 
   test('Input with masked char after', () => {
-    let mask = [/\d/, '-'];
+    let mask = [digit, '-'];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
-      previousRawValue: '',
       previousPlaceholder: '',
-      previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -128,7 +116,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -139,19 +127,17 @@ describe('getAdjustedCursorPosition', () => {
   });
 
   test('Input with masked char after followed by placeholder', () => {
-    let mask = [/\d/, '-', /\d/];
+    let mask = [digit, '-', digit];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1';
+    let inputValue = '1';
 
     let previous = {
       previousConformedValue: '',
-      previousRawValue: '',
       previousPlaceholder: '',
-      previousCursorPosition: 0,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 1,
       placeholderChar,
@@ -159,7 +145,7 @@ describe('getAdjustedCursorPosition', () => {
     });
 
     expect(maskedData).toEqual({
-      conformedValue: '1-',
+      conformedValue: '1-_',
       rawValue: '1',
       placeholder: '_-_',
       indexesOfPipedChars: [],
@@ -170,7 +156,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 1,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -180,106 +166,105 @@ describe('getAdjustedCursorPosition', () => {
     expect(adjustedCursor).toBe(2);
   });
 
-  test('with piped chars -> adding char before and no masked chars', () => {
-    let mask = [/\d/, /\d/];
-    let maskedData;
-    let adjustedCursor;
-    let changedValue = '1';
+  describe('with piped chars', () => {
+    function mockPipe(value: string) {
+      return {
+        value: `0${value.substr(0, 1)}`,
+        indexesOfPipedChars: [0],
+      };
+    }
 
-    let previous = {
-      previousConformedValue: '',
-      previousRawValue: '',
-      previousPlaceholder: '',
-      previousCursorPosition: 0,
-    };
+    test('adding char before and no masked chars', () => {
+      let mask = [digit, digit];
+      let maskedData;
+      let adjustedCursor;
+      let inputValue = '1';
 
-    maskedData = getMaskingData(changedValue, {
-      mask,
-      pipe: mockPipe,
-      currentCursorPosition: 1,
-      placeholderChar,
-      ...previous,
+      let previous = {
+        previousConformedValue: '',
+        previousPlaceholder: '',
+      };
+
+      maskedData = getMaskingData(inputValue, {
+        mask,
+        pipe: mockPipe,
+        currentCursorPosition: 1,
+        placeholderChar,
+        ...previous,
+      });
+
+      expect(maskedData).toEqual({
+        conformedValue: '01',
+        rawValue: '01',
+        placeholder: '__',
+        indexesOfPipedChars: [0],
+        cursorTrapIndexes: [],
+      });
+
+      adjustedCursor = getAdjustedCursorPosition({
+        ...previous,
+        currentCursorPosition: 1,
+        conformedValue: maskedData.conformedValue,
+        inputValue,
+        placeholderChar,
+        placeholder: maskedData.placeholder,
+        indexesOfPipedChars: maskedData.indexesOfPipedChars,
+        cursorTrapIndexes: maskedData.cursorTrapIndexes,
+      });
+
+      expect(adjustedCursor).toBe(2);
     });
 
-    expect(maskedData).toEqual({
-      conformedValue: '01',
-      rawValue: '01',
-      placeholder: '__',
-      indexesOfPipedChars: [0],
-      cursorTrapIndexes: [],
+    test('adding char before and following masked char', () => {
+      let mask = [digit, digit, '-', digit];
+      let maskedData;
+      let adjustedCursor;
+      let inputValue = '1';
+
+      maskedData = getMaskingData(inputValue, {
+        mask,
+        pipe: mockPipe,
+        currentCursorPosition: 1,
+        placeholderChar,
+        previousConformedValue: '',
+      });
+
+      expect(maskedData).toEqual({
+        conformedValue: '01',
+        rawValue: '01',
+        placeholder: '__-_',
+        indexesOfPipedChars: [0],
+        cursorTrapIndexes: [],
+      });
+
+      adjustedCursor = getAdjustedCursorPosition({
+        previousConformedValue: '',
+        previousPlaceholder: '',
+        currentCursorPosition: 1,
+        conformedValue: maskedData.conformedValue,
+        inputValue,
+        placeholderChar,
+        placeholder: maskedData.placeholder,
+        indexesOfPipedChars: maskedData.indexesOfPipedChars,
+        cursorTrapIndexes: maskedData.cursorTrapIndexes,
+      });
+
+      expect(adjustedCursor).toBe(3);
     });
-
-    adjustedCursor = getAdjustedCursorPosition({
-      ...previous,
-      currentCursorPosition: 1,
-      conformedValue: maskedData.conformedValue,
-      changedValue,
-      placeholderChar,
-      placeholder: maskedData.placeholder,
-      indexesOfPipedChars: maskedData.indexesOfPipedChars,
-      cursorTrapIndexes: maskedData.cursorTrapIndexes,
-    });
-
-    expect(adjustedCursor).toBe(2);
-  });
-
-  test('with piped chars -> adding char before and following masked char', () => {
-    let mask = [/\d/, /\d/, '-', /\d/];
-    let maskedData;
-    let adjustedCursor;
-    let changedValue = '1';
-
-    let previous = {
-      previousConformedValue: '',
-      previousRawValue: '',
-      previousPlaceholder: '',
-      previousCursorPosition: 0,
-    };
-
-    maskedData = getMaskingData(changedValue, {
-      mask,
-      pipe: mockPipe,
-      currentCursorPosition: 1,
-      placeholderChar,
-      ...previous,
-    });
-
-    expect(maskedData).toEqual({
-      conformedValue: '01',
-      rawValue: '01',
-      placeholder: '__-_',
-      indexesOfPipedChars: [0],
-      cursorTrapIndexes: [],
-    });
-
-    adjustedCursor = getAdjustedCursorPosition({
-      ...previous,
-      currentCursorPosition: 1,
-      conformedValue: maskedData.conformedValue,
-      changedValue,
-      placeholderChar,
-      placeholder: maskedData.placeholder,
-      indexesOfPipedChars: maskedData.indexesOfPipedChars,
-      cursorTrapIndexes: maskedData.cursorTrapIndexes,
-    });
-
-    expect(adjustedCursor).toBe(3);
   });
 
   test('with carat traps -> adding value before a cursor trap', () => {
     let mask = createNumberMask({ allowDecimal: true });
     let maskedData;
     let adjustedCursor;
-    let changedValue = '125.34';
+    let inputValue = '125.34';
 
     let previous = {
       previousConformedValue: '12.34',
-      previousRawValue: '1234',
       previousPlaceholder: '__.__',
-      previousCursorPosition: 2,
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 3,
       placeholderChar,
@@ -298,7 +283,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 3,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -309,107 +294,70 @@ describe('getAdjustedCursorPosition', () => {
     expect(adjustedCursor).toBe(3);
   });
 
-  test('removing value after a masked char', () => {
-    let mask = createNumberMask();
+  test('Backspacing a masked char with keepCharPositions', () => {
+    let mask = [digit, digit, '/', digit, digit];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '1,23';
+    let inputValue = '11__';
 
     let previous = {
-      previousConformedValue: '1,234',
-      previousRawValue: '1234',
-      previousPlaceholder: '_,___',
-      previousCursorPosition: 5,
+      previousConformedValue: '11/__',
+      previousPlaceholder: '__/__',
     };
 
-    maskedData = getMaskingData(changedValue, {
-      ...previous,
+    maskedData = getMaskingData(inputValue, {
       mask,
-      currentCursorPosition: 4,
+      currentCursorPosition: 2,
       placeholderChar,
+      keepCharPositions: true,
+      ...previous,
     });
 
     expect(maskedData).toEqual({
-      conformedValue: '123',
-      rawValue: '123',
-      placeholder: '___',
+      conformedValue: '11/__',
+      rawValue: '11',
+      placeholder: '__/__',
       indexesOfPipedChars: [],
       cursorTrapIndexes: [],
     });
 
     adjustedCursor = getAdjustedCursorPosition({
       ...previous,
-      currentCursorPosition: 4,
+      currentCursorPosition: 2,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
       cursorTrapIndexes: maskedData.cursorTrapIndexes,
     });
 
-    expect(adjustedCursor).toBe(3);
+    expect(adjustedCursor).toBe(2);
   });
 
-  // test('Backspacing a masked char with keepCharPositions', () => {
-  //   let mask = [/\d/, /\d/, '/', /\d/, /\d/];
-  //   let maskedData;
-  //   let adjustedCursor;
-  //   let changedValue = '11__';
-
-  //   let previous = {
-  //     previousCursorPosition: 3,
-  //     previousConformedValue: '11/__',
-  //     previousRawValue: '11',
-  //     previousPlaceholder: '__/__',
-  //   };
-
-  //   maskedData = getMaskingData(changedValue, {
-  //     mask,
-  //     currentCursorPosition: 2,
-  //     placeholderChar,
-  //     keepCharPositions: true,
-  //     guide: true,
-  //     ...previous,
-  //   });
-
-  //   expect(maskedData).toEqual({
-  //     conformedValue: '11/__',
-  //     rawValue: '11',
-  //     placeholder: '__/__',
-  //     indexesOfPipedChars: [],
-  //     cursorTrapIndexes: [],
-  //   });
-
-  //   adjustedCursor = getAdjustedCursorPosition({
-  //     ...previous,
-  //     currentCursorPosition: 2,
-  //     conformedValue: maskedData.conformedValue,
-  //     changedValue,
-  //     placeholderChar,
-  //     placeholder: maskedData.placeholder,
-  //     indexesOfPipedChars: maskedData.indexesOfPipedChars,
-  //     cursorTrapIndexes: maskedData.cursorTrapIndexes,
-  //     keepCharPositions: true,
-  //     guide: true,
-  //   });
-
-  //   expect(adjustedCursor).toBe(2);
-  // });
-
   test('keepCharPositions -> cursor starting after masked char, before placeholder', () => {
-    let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+    let mask = [
+      digit,
+      digit,
+      '/',
+      digit,
+      digit,
+      '/',
+      digit,
+      digit,
+      digit,
+      digit,
+    ];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '11/11/2_019';
+    let inputValue = '11/11/2_019';
 
     let previous = {
       previousConformedValue: '11/11/_019',
-      previousRawValue: '1111019',
       previousPlaceholder: '__/__/____',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 7,
       placeholderChar,
@@ -430,7 +378,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 7,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -441,18 +389,28 @@ describe('getAdjustedCursorPosition', () => {
   });
 
   test('keepCharPositions -> cursor starting before masked char, before placeholder', () => {
-    let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+    let mask = [
+      digit,
+      digit,
+      '/',
+      digit,
+      digit,
+      '/',
+      digit,
+      digit,
+      digit,
+      digit,
+    ];
     let maskedData;
     let adjustedCursor;
-    let changedValue = '11/112/_019';
+    let inputValue = '11/112/_019';
 
     let previous = {
       previousConformedValue: '11/11/_019',
-      previousRawValue: '1111019',
       previousPlaceholder: '__/__/____',
     };
 
-    maskedData = getMaskingData(changedValue, {
+    maskedData = getMaskingData(inputValue, {
       mask,
       currentCursorPosition: 6,
       placeholderChar,
@@ -473,7 +431,7 @@ describe('getAdjustedCursorPosition', () => {
       ...previous,
       currentCursorPosition: 6,
       conformedValue: maskedData.conformedValue,
-      changedValue,
+      inputValue,
       placeholderChar,
       placeholder: maskedData.placeholder,
       indexesOfPipedChars: maskedData.indexesOfPipedChars,

@@ -37,10 +37,25 @@ describe('useMask', () => {
     let input = screen.getByRole('textbox') as HTMLInputElement;
 
     // we have to mock selectionStart until we can update our version of jest
-    fireEvent.change(input, { target: { value: '1/1 ', selectionStart: 3 } });
+    fireEvent.change(input, { target: { value: '1/1', selectionStart: 3 } });
+    expect(input.selectionStart).toBe(3);
     expect(input.value).toBe('1/1');
 
     fireEvent.change(input, { target: { value: '', selectionStart: 0 } });
     expect(input.value).toBe('');
+  });
+
+  it('handles backspacing on a placeholder char', () => {
+    render(<MaskedInput />);
+
+    let input = screen.getByRole('textbox') as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: '1', selectionStart: 1 } });
+    expect(input.selectionStart).toBe(2);
+    expect(input.value).toBe('1/ ');
+
+    fireEvent.change(input, { target: { value: '1', selectionStart: 1 } });
+    expect(input.selectionStart).toBe(1);
+    expect(input.value).toBe('1/ ');
   });
 });

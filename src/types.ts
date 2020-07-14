@@ -16,7 +16,17 @@ export type MaskedInputProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export type MaskAndPipeConfig = {
+export type ConformToMaskConfig = {
+  previousConformedValue: string;
+  guide: boolean;
+  placeholderChar: string;
+  currentCursorPosition: number;
+  keepCharPositions: boolean;
+  cursorTrapIndexes: number[];
+};
+
+export type PipeConfig = {
+  inputValue: string;
   previousConformedValue: string;
   guide: boolean;
   placeholderChar: string;
@@ -27,25 +37,14 @@ export type MaskAndPipeConfig = {
 };
 
 export type PipeResult = {
-  value: string;
+  value?: string;
   indexesOfPipedChars?: number[];
-  rejected?: boolean;
 };
 
-export type Pipe = (
-  conformedValue: string,
-  config: MaskAndPipeConfig & {
-    rawValue: string;
-  }
-) => false | string | PipeResult;
+export type Pipe = (conformedValue: string, config: PipeConfig) => PipeResult;
 
 export type MaskIndex = RegExp | string;
 export type Mask = MaskIndex[] | false;
-export type MaskAndPipe = {
-  mask: Mask;
-  pipe: Pipe;
-};
-export type MaskProp = Mask | MaskAndPipe;
 
 export type MaskGetter = (
   rawValue: string,
@@ -56,7 +55,7 @@ export type MaskGetter = (
   }
 ) => Mask;
 
-export type MaskOrMaskGetter = MaskProp | MaskGetter;
+export type MaskOrMaskGetter = Mask | MaskGetter;
 
 export type MaskingData = {
   conformedValue: string;
@@ -64,10 +63,4 @@ export type MaskingData = {
   placeholder: string;
   indexesOfPipedChars: number[];
   cursorTrapIndexes: number[];
-};
-
-export type EventRef = null | {
-  value: string;
-  start: number | null;
-  target: HTMLInputElement;
 };

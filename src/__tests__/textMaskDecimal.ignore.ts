@@ -11,7 +11,7 @@
 //     let numberMask = createNumberMask({ allowDecimal: true });
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '.';
+//     let inputValue = '.';
 
 //     let previous = {
 //       previousConformedValue: '',
@@ -19,7 +19,7 @@
 //       previousRawValue: '',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 1,
 //       guide: false,
@@ -39,7 +39,7 @@
 //       ...previous,
 //       currentCursorPosition: 1,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -54,7 +54,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '0';
+//     let inputValue = '0';
 
 //     let previous = {
 //       previousConformedValue: '',
@@ -62,7 +62,7 @@
 //       previousRawValue: '',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 1,
 //       guide: false,
@@ -82,7 +82,7 @@
 //       ...previous,
 //       currentCursorPosition: 1,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -97,7 +97,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '0.';
+//     let inputValue = '0.';
 
 //     let previous = {
 //       previousConformedValue: '0',
@@ -105,7 +105,7 @@
 //       previousPlaceholder: '_',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 2,
 //       guide: false,
@@ -125,7 +125,7 @@
 //       ...previous,
 //       currentCursorPosition: 2,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -140,7 +140,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '0.1';
+//     let inputValue = '0.1';
 
 //     let previous = {
 //       previousRawValue: '0.',
@@ -149,7 +149,7 @@
 //     };
 
 //     /** Simulating typing value after decimal */
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 3,
 //       guide: false,
@@ -169,7 +169,7 @@
 //       ...previous,
 //       currentCursorPosition: 3,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -184,7 +184,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '1,234.';
+//     let inputValue = '1,234.';
 
 //     let previous = {
 //       previousRawValue: '1234',
@@ -193,7 +193,7 @@
 //       previousCursorPosition: 5,
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 6,
 //       guide: false,
@@ -215,7 +215,7 @@
 //       ...previous,
 //       currentCursorPosition: 6,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -230,7 +230,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '12.45';
+//     let inputValue = '12.45';
 
 //     let previous = {
 //       previousRawValue: '123.45',
@@ -239,7 +239,7 @@
 //     };
 
 //     /** Simulating removing integer before decimal */
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 2,
 //       previousConformedValue: '123.45',
@@ -260,7 +260,7 @@
 //       ...previous,
 //       currentCursorPosition: 2,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -275,7 +275,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '123.';
+//     let inputValue = '123.';
 
 //     let previous = {
 //       previousRawValue: '123.4',
@@ -284,7 +284,7 @@
 //       previousCursorPosition: 5,
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 4,
 //       guide: false,
@@ -304,7 +304,7 @@
 //       ...previous,
 //       currentCursorPosition: 4,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -319,7 +319,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '1,234';
+//     let inputValue = '1,234';
 
 //     let previous = {
 //       previousRawValue: '1234.',
@@ -328,7 +328,7 @@
 //       previousCursorPosition: 6,
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 5,
 //       guide: false,
@@ -348,7 +348,7 @@
 //       ...previous,
 //       currentCursorPosition: 5,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -363,7 +363,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '.';
+//     let inputValue = '.';
 
 //     let previous = {
 //       previousRawValue: '',
@@ -371,7 +371,7 @@
 //       previousPlaceholder: '',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 1,
 //       guide: false,
@@ -391,7 +391,7 @@
 //       ...previous,
 //       currentCursorPosition: 1,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -406,7 +406,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '.';
+//     let inputValue = '.';
 
 //     let previous = {
 //       previousConformedValue: '',
@@ -414,7 +414,7 @@
 //       previousPlaceholder: '$_',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 2,
 //       guide: false,
@@ -434,7 +434,7 @@
 //       ...previous,
 //       currentCursorPosition: 2,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -449,7 +449,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '1,234.';
+//     let inputValue = '1,234.';
 
 //     let previous = {
 //       previousConformedValue: '1,234',
@@ -457,7 +457,7 @@
 //       previousPlaceholder: '_,___',
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 6,
 //       guide: false,
@@ -477,7 +477,7 @@
 //       ...previous,
 //       currentCursorPosition: 6,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
@@ -492,7 +492,7 @@
 //     let placeholderChar = '_';
 //     let maskedData;
 //     let adjustedCursor;
-//     let changedValue = '1,234.9';
+//     let inputValue = '1,234.9';
 
 //     let previous = {
 //       previousConformedValue: '123.9',
@@ -501,7 +501,7 @@
 //       previousCursorPosition: 3,
 //     };
 
-//     maskedData = getMaskingData(changedValue, {
+//     maskedData = getMaskingData(inputValue, {
 //       mask: numberMask,
 //       currentCursorPosition: 5,
 //       guide: false,
@@ -521,7 +521,7 @@
 //       ...previous,
 //       currentCursorPosition: 5,
 //       conformedValue: maskedData.conformedValue,
-//       changedValue,
+//       inputValue,
 //       placeholderChar,
 //       placeholder: maskedData.placeholder,
 //       indexesOfPipedChars: maskedData.indexesOfPipedChars,
