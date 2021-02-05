@@ -50,7 +50,7 @@ export type MaskGetter = (
   rawValue: string,
   config: {
     currentCursorPosition: number;
-    previousConformedValue: string;
+    previousConformedValue: string | null;
     placeholderChar: string;
   }
 ) => Mask;
@@ -58,7 +58,7 @@ export type MaskGetter = (
 export type MaskOrMaskGetter = Mask | MaskGetter;
 
 export type MaskingData = {
-  conformedValue: string;
+  conformedValue: string | null;
   rawValue: string;
   placeholder: string;
   indexesOfPipedChars: number[];

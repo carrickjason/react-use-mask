@@ -56,9 +56,9 @@ export function getMaskingData(
 
   let piped =
     typeof pipe === 'function'
-      ? pipe(conformedValue, {
+      ? pipe(conformedValue ?? '', {
           inputValue,
-          previousConformedValue,
+          previousConformedValue: previousConformedValue,
           guide,
           placeholderChar,
           placeholder,
@@ -76,10 +76,12 @@ export function getMaskingData(
   let inputValueShouldBeEmpty = conformedValue === placeholder; // || rawValue;
   let conformedValueWhenEmpty = showMask ? placeholder : '';
 
+  if (inputValueShouldBeEmpty) {
+    conformedValue = conformedValueWhenEmpty;
+  }
+
   return {
-    conformedValue: inputValueShouldBeEmpty
-      ? conformedValueWhenEmpty
-      : conformedValue,
+    conformedValue,
     placeholder,
     rawValue,
     cursorTrapIndexes,

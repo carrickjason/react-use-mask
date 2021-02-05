@@ -1,4 +1,8 @@
-import { conformToMask, ConformConfig } from '../conformToMask';
+import {
+  conformToMask,
+  ConformConfig,
+  getChangeIndexRange,
+} from '../conformToMask';
 
 const digit = /\d/;
 
@@ -7,7 +11,7 @@ describe('conformToMask', () => {
     const defaultConfig: ConformConfig = {
       guide: true,
       previousConformedValue: '',
-      currentCursorPosition: 1,
+      currentCursorPosition: 0,
       keepCharPositions: false,
       cursorTrapIndexes: [],
     };
@@ -19,6 +23,16 @@ describe('conformToMask', () => {
         defaultConfig
       );
       expect(conformedValue).toBe('1/_');
+    });
+
+    it('handles full initial value', () => {
+      let { conformedValue } = conformToMask(
+        '11/11/2021',
+        [digit, digit, '/', digit, digit, '/', digit, digit, digit, digit],
+        defaultConfig
+      );
+
+      expect(conformedValue).toBe('11/11/2021');
     });
 
     it('it adds masked chars that are adjacent to accepted input', () => {
@@ -213,10 +227,20 @@ describe('conformToMask', () => {
     const defaultConfig: ConformConfig = {
       guide: false,
       previousConformedValue: '',
-      currentCursorPosition: 1,
+      currentCursorPosition: 0,
       keepCharPositions: true,
       cursorTrapIndexes: [],
     };
+
+    it('handles full initial value', () => {
+      let { conformedValue } = conformToMask(
+        '11/11/2021',
+        [digit, digit, '/', digit, digit, '/', digit, digit, digit, digit],
+        defaultConfig
+      );
+
+      expect(conformedValue).toBe('11/11/2021');
+    });
 
     it('handles entering char between existing chars', () => {
       let { conformedValue } = conformToMask(
@@ -300,5 +324,40 @@ describe('conformToMask', () => {
       );
       expect(conformedValue).toBe('1_/_4');
     });
+  });
+});
+
+describe('getChangeIndexRange', () => {
+  it('returns correct range with single input', () => {
+    let [start, end] = getChangeIndexRange({
+      currentCursorPosition: 1,
+      isAddition: true,
+      editDistance: 1,
+    });
+
+    expect(start).toBe(0);
+    expect(end).toBe(1);
+  });
+
+  it('returns correct range with bulk input', () => {
+    let [start, end] = getChangeIndexRange({
+      currentCursorPosition: 2,
+      isAddition: true,
+      editDistance: 2,
+    });
+
+    expect(start).toBe(0);
+    expect(end).toBe(2);
+  });
+
+  it('returns correct range when simulating initial value', () => {
+    let [start, end] = getChangeIndexRange({
+      currentCursorPosition: 0,
+      isAddition: true,
+      editDistance: 2,
+    });
+
+    expect(start).toBe(0);
+    expect(end).toBe(2);
   });
 });
