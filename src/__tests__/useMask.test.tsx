@@ -31,6 +31,18 @@ describe('useMask', () => {
     jest.resetAllMocks();
   });
 
+  it('renders with no initial value', () => {
+    render(<MaskedInput />);
+    let input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.value).toBe('');
+  });
+
+  it('renders with initial value', () => {
+    render(<MaskedInput initial="1/1" />);
+    let input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.value).toBe('1/1');
+  });
+
   it('allows deleting entire selection', () => {
     render(<MaskedInput />);
 

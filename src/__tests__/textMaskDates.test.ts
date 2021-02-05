@@ -15,7 +15,6 @@ describe('createAutoCorrectedDatePipe', () => {
       previousPlaceholder: '',
     };
 
-    /** Simulating removing integer before decimal */
     maskedData = getMaskingData(inputValue, {
       currentCursorPosition: 0,
       pipe,
@@ -27,6 +26,35 @@ describe('createAutoCorrectedDatePipe', () => {
     expect(maskedData).toEqual({
       conformedValue: '',
       rawValue: '',
+      placeholder: '__/__/____',
+      indexesOfPipedChars: [],
+      cursorTrapIndexes: [],
+    });
+  });
+
+  test('result when first focusing input with initial value', () => {
+    let pipe = createAutoCorrectedDatePipe('MM/DD/YYYY');
+    let mask = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
+    let placeholderChar = '_';
+    let maskedData;
+    let inputValue = '01/01/2021';
+
+    let previous = {
+      previousConformedValue: '',
+      previousPlaceholder: '',
+    };
+
+    maskedData = getMaskingData(inputValue, {
+      currentCursorPosition: 0,
+      pipe,
+      mask,
+      placeholderChar,
+      ...previous,
+    });
+
+    expect(maskedData).toEqual({
+      conformedValue: '01/01/2021',
+      rawValue: '01012021',
       placeholder: '__/__/____',
       indexesOfPipedChars: [],
       cursorTrapIndexes: [],

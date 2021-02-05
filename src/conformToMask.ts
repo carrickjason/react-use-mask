@@ -25,12 +25,14 @@ export function conformToMask(
 ): { conformedValue: string; meta?: { someCharsRejected: boolean } } {
   let isGuide = guide || keepCharPositions;
   let inputChars = inputValue.split('');
-  let previousConformedValueLength = previousConformedValue.length;
+  let previousConformedValueLength = previousConformedValue?.length ?? 0;
   let editDistance = inputValue.length - previousConformedValueLength;
   let isAddition = editDistance > 0;
-  let indexOfFirstChange =
-    currentCursorPosition + (isAddition ? -editDistance : 0);
-  let indexOfLastChange = indexOfFirstChange + Math.abs(editDistance);
+  let [indexOfFirstChange, indexOfLastChange] = getChangeIndexRange({
+    currentCursorPosition,
+    isAddition,
+    editDistance,
+  });
   let maskLength = mask.length;
 
   if (keepCharPositions) {
@@ -57,13 +59,12 @@ export function conformToMask(
     }
   }
 
-  let conformedChars: string[] = previousConformedValue
-    .split('')
-    .slice(0, indexOfFirstChange);
+  let conformedChars: string[] =
+    previousConformedValue?.split('').slice(0, indexOfFirstChange) ?? [];
 
   let inputIndex = indexOfFirstChange;
   let maskIndex = indexOfFirstChange;
-  let adjacentMaskedCharStatus = 'UNFOUND';
+  let adjacentMaskedCharStatus: 'UNFOUND' | 'FOUND' | 'PAST' = 'UNFOUND';
   while (maskIndex < maskLength) {
     let char = inputChars[inputIndex];
     let maskAtIndex = mask[maskIndex];
@@ -107,4 +108,20 @@ export function conformToMask(
   }
 
   return { conformedValue: conformedChars.filter(Boolean).join('') };
+}
+
+export function getChangeIndexRange({
+  currentCursorPosition,
+  isAddition,
+  editDistance,
+}: {
+  currentCursorPosition: number;
+  isAddition: boolean;
+  editDistance: number;
+}) {
+  let isInitialValue = currentCursorPosition === 0;
+  let start =
+    currentCursorPosition + (isAddition && !isInitialValue ? -editDistance : 0);
+
+  return [start, start + Math.abs(editDistance)];
 }

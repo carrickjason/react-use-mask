@@ -21,7 +21,7 @@ export function useMask({
 }: UseMaskArgs): MaskedInputProps {
   const [, refresh] = React.useReducer((state: number) => state + 1, 0);
   let masked = React.useRef<MaskingData>({
-    conformedValue: '',
+    conformedValue: null,
     rawValue: '',
     placeholder: '',
     indexesOfPipedChars: [],
@@ -45,12 +45,12 @@ export function useMask({
     let cursorPosition = 0;
 
     if (currentEvent || !value || value !== masked.current.conformedValue) {
-      let inputValue = (currentEvent ? currentEvent.value : value) || '';
+      let inputValue = (currentEvent?.value ?? value) || '';
       let selectionStart = currentEvent?.selectionStart ?? 0;
 
       let updatedMaskedData = getMaskingData(inputValue, {
         currentCursorPosition: selectionStart,
-        previousConformedValue: masked.current.conformedValue,
+        previousConformedValue: masked.current.conformedValue ?? '',
         showMask,
         guide,
         keepCharPositions,
@@ -61,9 +61,9 @@ export function useMask({
 
       cursorPosition = getAdjustedCursorPosition({
         previousPlaceholder: masked.current.placeholder,
-        previousConformedValue: masked.current.conformedValue,
+        previousConformedValue: masked.current.conformedValue ?? '',
         currentCursorPosition: selectionStart,
-        conformedValue: updatedMaskedData.conformedValue,
+        conformedValue: updatedMaskedData.conformedValue ?? '',
         inputValue,
         placeholder: updatedMaskedData.placeholder,
         indexesOfPipedChars: updatedMaskedData.indexesOfPipedChars,
@@ -73,17 +73,14 @@ export function useMask({
 
       const { conformedValue } = updatedMaskedData;
 
-      // When a change results in the same conformedValue as previous
-      // (ie: backspacing a masked character with keepCharPositions) we need to
-      // force an update so that our changes to the cursor position can be
-      // made in the effect return call
-      if (
-        masked.current.conformedValue &&
-        masked.current.conformedValue === conformedValue
-      ) {
+      let isFirstRender = masked.current.conformedValue === null;
+      let conformedValueExistsAndEqualsOldValue =
+        conformedValue && masked.current.conformedValue === conformedValue;
+
+      if (isFirstRender || conformedValueExistsAndEqualsOldValue) {
         refresh();
       } else if (conformedValue !== value) {
-        onChange(conformedValue);
+        onChange(conformedValue ?? '');
       }
 
       masked.current = updatedMaskedData;
@@ -99,6 +96,6 @@ export function useMask({
 
   return {
     onChange: handleChange,
-    value: masked.current.conformedValue,
+    value: masked.current.conformedValue ?? '',
   };
 }
